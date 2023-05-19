@@ -7,6 +7,39 @@
 	},
 	"item": [
 		{
+			"name": "Unauthorized request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response should be 401\", function () {\r",
+							"    pm.response.to.be.unauthorized;    \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/users",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Create User",
 			"event": [
 				{
@@ -748,6 +781,21 @@
 			"response": []
 		}
 	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "admin",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "admin",
+				"type": "string"
+			}
+		]
+	},
 	"event": [
 		{
 			"listen": "prerequest",
@@ -784,6 +832,13 @@
 					"            const request = {",
 					"                url: this.baseUrl + path,",
 					"                method: method,",
+					"                auth: {",
+					"                    type: \"basic\",",
+					"                    basic: [",
+					"                        {key: \"username\", value:\"admin\"},",
+					"                        {key: \"password\", value:\"admin\"}",
+					"                    ]",
+					"                },",
 					"                body: body == null ? \"\" : JSON.stringify(body),",
 					"                header: { \"Content-Type\": \"application/json\" },",
 					"            };",
