@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import prj.sqsw.telrostest.user.dto.UserContactsDto;
 import prj.sqsw.telrostest.user.dto.UserCreateDto;
 import prj.sqsw.telrostest.user.dto.UserFullDto;
 import prj.sqsw.telrostest.user.dto.UserUpdateDto;
@@ -31,15 +32,28 @@ public class UserController {
     }
 
     @PatchMapping("/{userId}")
-    public UserFullDto createUser(@PathVariable Long userId,
+    public UserFullDto updateUser(@PathVariable Long userId,
                                   @RequestBody UserUpdateDto userUpdateDto) {
-        log.debug("Got request to create user");
+        log.debug("Got request to update user id: {}", userId);
         return userService.update(userUpdateDto, userId);
     }
 
     @DeleteMapping("/{userId}")
     public void deleteUser(@PathVariable Long userId) {
-        log.debug("Got request to delete user id={}", userId);
+        log.debug("Got request to delete user id: {}", userId);
         userService.delete(userId);
+    }
+
+    @PatchMapping("/{userId}/contacts")
+    public UserFullDto updateUserContacts(@PathVariable Long userId,
+                                          @Valid @RequestBody UserContactsDto userContactsDto) {
+        log.debug("Got request to update user contacts id: {}", userId);
+        return userService.updateContacts(userContactsDto, userId);
+    }
+
+    @GetMapping("/{userId}/contacts")
+    public UserContactsDto getAllUsers(@PathVariable Long userId) {
+        log.debug("Got request to get user contacts id: {}", userId);
+        return userService.getContacts(userId);
     }
 }

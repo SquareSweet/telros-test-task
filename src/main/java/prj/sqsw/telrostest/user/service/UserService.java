@@ -1,5 +1,6 @@
 package prj.sqsw.telrostest.user.service;
 
+import prj.sqsw.telrostest.user.dto.UserContactsDto;
 import prj.sqsw.telrostest.user.dto.UserCreateDto;
 import prj.sqsw.telrostest.user.dto.UserFullDto;
 import prj.sqsw.telrostest.user.dto.UserUpdateDto;
@@ -18,5 +19,9 @@ public interface UserService {
     User findById(Long userId);
 
     void delete(Long userId);
+
+    UserFullDto updateContacts (UserContactsDto userContactsDto, Long userId);
+
+    UserContactsDto getContacts(Long userId);
 
 }

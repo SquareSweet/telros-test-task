@@ -3,6 +3,7 @@ package prj.sqsw.telrostest.user.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import prj.sqsw.telrostest.user.dto.UserContactsDto;
 import prj.sqsw.telrostest.user.dto.UserCreateDto;
 import prj.sqsw.telrostest.user.dto.UserFullDto;
 import prj.sqsw.telrostest.user.dto.UserUpdateDto;
@@ -75,6 +76,29 @@ public class UserServiceImpl implements UserService {
     public void delete(Long userId) {
         User user = findById(userId); //throws exception if user doesn't exist
         repository.delete(user);
+    }
+
+    @Override
+    public UserFullDto updateContacts(UserContactsDto userContactsDto, Long userId) {
+        User user = findById(userId); //throws exception if user doesn't exist
+
+        //since none of the fields are required in update json checking every field for null value
+        if (userContactsDto.getEmail() != null) {
+            user.setEmail(userContactsDto.getEmail());
+        }
+        if (userContactsDto.getPhoneNumber() != null) {
+            user.setPhoneNumber(userContactsDto.getPhoneNumber());
+        }
+
+        user = repository.save(user);
+        log.debug("Update user contacts id: {}", user.getId());
+        return mapper.toUserFullDto(user);
+    }
+
+    @Override
+    public UserContactsDto getContacts(Long userId) {
+        return mapper.toUserContactsDto(repository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId)));
     }
 
 }

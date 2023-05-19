@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
+import prj.sqsw.telrostest.user.dto.UserContactsDto;
 import prj.sqsw.telrostest.user.dto.UserCreateDto;
 import prj.sqsw.telrostest.user.dto.UserFullDto;
 import prj.sqsw.telrostest.user.dto.UserUpdateDto;
@@ -42,7 +43,7 @@ class UserServiceTest {
                 .lastName("Smith")
                 .firstName("John")
                 .midName("J")
-                .birthday(LocalDate.of(1995, 12, 5))
+                .birthday(LocalDate.of(1995, 5, 12))
                 .phoneNumber("+79991234567")
                 .build();
         when(mockRepository.findById(1L)).thenReturn(Optional.of(user));
@@ -76,7 +77,7 @@ class UserServiceTest {
                 .lastName("Doe")
                 .firstName("Jane")
                 .midName("S")
-                .birthday(LocalDate.of(1997, 5, 12))
+                .birthday(LocalDate.of(1997, 12, 5))
                 .phoneNumber("+79997654321")
                 .build();
         when(mockRepository.save(userUpdated)).thenReturn(userUpdated);
@@ -96,7 +97,7 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("Partially update new User, expected only mentioned fields updated")
+    @DisplayName("Partially update User, expected only mentioned fields updated")
     void updateUserPartial() {
         User userUpdated = User.builder()
                 .id(1L)
@@ -104,7 +105,7 @@ class UserServiceTest {
                 .lastName(user.getLastName())
                 .firstName(user.getFirstName())
                 .midName(user.getMidName())
-                .birthday(LocalDate.of(1997, 5, 12))
+                .birthday(LocalDate.of(1997, 12, 5))
                 .phoneNumber("+79997654321")
                 .build();
         when(mockRepository.save(userUpdated)).thenReturn(userUpdated);
@@ -158,5 +159,36 @@ class UserServiceTest {
     @DisplayName("Delete non existent User by Id, expected UserNotFoundException thrown")
     void deleteNonExistentUser() {
         assertThrows(UserNotFoundException.class, () -> userService.delete(-1L));
+    }
+
+    @Test
+    @DisplayName("Update User contacts, expected repository save method called")
+    void updateUserContacts() {
+        User userUpdated = User.builder()
+                .id(1L)
+                .email("updated@email.com")
+                .lastName(user.getLastName())
+                .firstName(user.getFirstName())
+                .midName(user.getMidName())
+                .birthday(LocalDate.of(1995, 5, 12))
+                .phoneNumber("+79997654321")
+                .build();
+        when(mockRepository.save(userUpdated)).thenReturn(userUpdated);
+
+        UserContactsDto userContactsDto = UserContactsDto.builder()
+                .email(userUpdated.getEmail())
+                .phoneNumber(userUpdated.getPhoneNumber())
+                .build();
+        UserFullDto expected = userMapper.toUserFullDto(userUpdated);
+        UserFullDto actual = userService.updateContacts(userContactsDto, 1L);
+        assertEquals(expected, actual);
+        verify(mockRepository, times(1)).save(userUpdated);
+    }
+
+    @Test
+    @DisplayName("Update non existent User contacts, expected UserNotFoundException thrown")
+    void updateNonExistentUserContacts() {
+        assertThrows(UserNotFoundException.class,
+                () -> userService.updateContacts(UserContactsDto.builder().build(), -1L));
     }
 }
