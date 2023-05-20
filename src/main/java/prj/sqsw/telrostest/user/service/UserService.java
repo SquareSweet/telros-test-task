@@ -24,4 +24,6 @@ public interface UserService {
 
     UserContactsDto getContacts(Long userId);
 
+    User updatePhoto(String path, Long userId);
+
 }

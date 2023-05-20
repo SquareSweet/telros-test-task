@@ -101,4 +101,12 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UserNotFoundException(userId)));
     }
 
+    @Override
+    public User updatePhoto(String path, Long userId) {
+        User user = findById(userId); //throws exception if user doesn't exist
+
+        user.setPhoto(path);
+        return repository.save(user);
+    }
+
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MultipartException;
 import prj.sqsw.telrostest.user.exception.UserNotFoundException;
 
 import java.time.LocalDateTime;
@@ -29,7 +30,8 @@ public class ErrorHandler {
                         .build());
     }
 
-    @ExceptionHandler({MethodArgumentNotValidException.class, MissingServletRequestParameterException.class})
+    @ExceptionHandler({MethodArgumentNotValidException.class, MissingServletRequestParameterException.class,
+            MultipartException.class})
     public ResponseEntity<ApiError> handleBadRequest(Exception exception) {
         log.error(exception.getMessage());
         return ResponseEntity

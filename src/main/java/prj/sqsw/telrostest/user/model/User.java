@@ -12,8 +12,8 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
-@ToString
+@EqualsAndHashCode(exclude = {"photo"})
+@ToString(exclude = {"photo"})
 @Entity
 @Table(name = "users")
 public class User {
@@ -30,4 +30,5 @@ public class User {
     LocalDate birthday;
     @Column(name = "phone_number")
     String phoneNumber;
+    String photo;
 }

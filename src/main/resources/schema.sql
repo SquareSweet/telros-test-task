@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS users
     mid_name     VARCHAR(200),
     birthday     TIMESTAMP WITHOUT TIME ZONE,
     phone_number VARCHAR(12),
+    photo    VARCHAR(64),
     CONSTRAINT pk_users PRIMARY KEY (id),
     CONSTRAINT uq_users_email UNIQUE (email)
 );
