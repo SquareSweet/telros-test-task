@@ -1,15 +1,14 @@
 package prj.sqsw.telrostest.user.dto;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
 @Builder
+@EqualsAndHashCode
+@ToString
 public class UserUpdateDto {
     String email;
     String lastName;
