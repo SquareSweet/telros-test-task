@@ -2,16 +2,15 @@ package prj.sqsw.telrostest.user.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
 @Builder
+@EqualsAndHashCode
+@ToString
 public class UserCreateDto {
     @NotBlank(message = "User email should not be blank")
     @Email(message = "User email should meet email format requirements")

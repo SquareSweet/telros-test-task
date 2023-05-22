@@ -52,7 +52,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/contacts")
-    public UserContactsDto getAllUsers(@PathVariable Long userId) {
+    public UserContactsDto getUserContacts(@PathVariable Long userId) {
         log.debug("Got request to get user contacts id: {}", userId);
         return userService.getContacts(userId);
     }
